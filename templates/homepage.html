@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => { 
+            document.querySelectorAll('.cc').forEach(function(e){
+                e.addEventListener('click',function(){
+                    console.log("ssss");
+                });
+            });
+        });
+        </script>
+        <style>
+            .cc:hover{
+                background-color: lightgray;
+            }
+        </style>
+
+    </head>
+    <body>
+        <ul>
+            <li class="cc"> Click 1</li>
+            <li class="cc"> Click 2</li>
+
+        </ul>
+
+
+
+    </body>
+</html>
