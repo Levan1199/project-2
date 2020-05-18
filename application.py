@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect,url_for
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -14,6 +14,18 @@ current_channel = None
 
 @app.route("/")
 def index():
+    if users == []:
+        return render_template("access.html")
+    else:
+        return render_template("index.html")
+
+@app.route("/home",methods=["POST"])
+def home():
+    name = request.form.get("name")    
+    for user in users:
+        if user == name:
+            return render_template("index.html")        
+    users.append(name)
     return render_template("index.html")
 
 @socketio.on('access')
@@ -23,20 +35,9 @@ def access():
         emit('list contents',current_channel, broadcast = False)
     latest = len(users) - 1    
     if latest >= 0:
-        emit('user name', users[latest], broadcast = False)
-
-@socketio.on('get name')
-def get_name(data):   
-    name = data["name"]
-    for user in users:
-        if user == name:
-            t = "/e/"
-            emit('user name',t, broadcast = False)
-            return
-    users.append(name)  
-    emit('user name', name, broadcast = False)
-
-
+        emit('user name', users[latest], broadcast = False) 
+    else:
+        emit('user name', "/e/", broadcast = False) 
 
 @socketio.on('create channel')
 def create(data):
@@ -74,4 +75,3 @@ def comment(data):
 
 if __name__ == '__main__':
     socketio.run(app)
-
