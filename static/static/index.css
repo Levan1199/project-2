@@ -1,0 +1,76 @@
+.container{
+    margin:60px auto;
+    background:#fff;
+    padding: 0; 
+    border-radius: 7px;
+}
+
+#profile-tray{
+    padding: 5px 15px;
+    background-color: #eee;
+    border-radius: 7px;
+    /* display: inline; */
+}
+
+.color-block{
+    height: 50px;
+    width: 50px;
+    background-color: rgb(119, 199, 226);
+    border-radius: 50%;   
+    display: inline-block;
+}
+#profile-tray h6{  
+    text-align: center;
+    margin-top: 10px;
+    font-size: 25px;
+    /* color:grey; */
+    margin-left: 14px;       
+}
+
+.create-channel-box{
+    background-color: #fafafa;
+    padding: 10px 13px;
+}
+
+.create-channel-box .input-wrapper i{ 
+    color:grey;
+    vertical-align: middle;
+    margin-left: 7px;
+}
+
+.create-channel-box .input-wrapper input{
+    border:none;
+    border-radius: 40px;
+    width: 80%;
+    padding-left: 10px;
+}
+.create-channel-box .input-wrapper input:hover{
+    background-color: lightblue;
+}
+
+.chat-box-tray{
+    text-align: center;    
+    background:#eee;
+    padding: 10px 15px;
+    border-radius: 7px;  
+    width: 55%;    
+    margin-top: 19px;   
+    position: fixed;
+    bottom: 0; 
+}
+
+.chat-box-tray input{
+    width: 90%;
+    margin: 0 5px;
+    padding: 2px 2px;
+    vertical-align: middle;  
+}
+
+.chat-box-tray i{
+    font-size: 25px;
+    vertical-align: middle;
+}
+.channelnode:hover{
+    background-color: lightblue;
+    border-radius: 10px;
+}
