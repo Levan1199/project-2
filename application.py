@@ -9,35 +9,24 @@ socketio = SocketIO(app)
 
 channels = [] # list of channels created
 contents = {} # dict of channel (keyword) : Comments
-users = [] # list of users online
 current_channel = None
+test_user = None
 
 @app.route("/")
-def index():
-    if users == []:
-        return render_template("access.html")
-    else:
-        return render_template("index.html")
+def index():  
+    return render_template("access.html")
 
-@app.route("/home",methods=["POST"])
+@app.route("/home")
 def home():
-    name = request.form.get("name")    
-    for user in users:
-        if user == name:
-            return render_template("index.html")        
-    users.append(name)
-    return render_template("index.html")
+    print('inside home')
+    return render_template("index.html")    
+
 
 @socketio.on('access')
 def access():        
     emit('list channels',channels, broadcast = False)   
     if current_channel is not None:      
         emit('list contents',current_channel, broadcast = False)
-    latest = len(users) - 1    
-    if latest >= 0:
-        emit('user name', users[latest], broadcast = False) 
-    else:
-        emit('user name', "/e/", broadcast = False) 
 
 @socketio.on('create channel')
 def create(data):
@@ -69,9 +58,10 @@ def comment(data):
     cmt_array = content.get(channel_name)
     comment = cmt_array[0]   #get [user,comment]
 
-    channel_list = contents.get(channel_name) # get channel list(array) with key is channel name  
-    channel_list.append(comment) #append the array[user,comment] into the channel list  
-    emit('add comment', channel_list, broadcast = True)
+    content_of_channel = contents.get(channel_name) # get channel list(array) with key is channel name  
+    content_of_channel.append(comment) #append the array[user,comment] into the channel list  
+    emit('add comment', {'content':content_of_channel,'channel_name':channel_name}, broadcast = True)
 
 if __name__ == '__main__':
+    app.run(host='0.0.0.0')
     socketio.run(app)
