@@ -37,7 +37,6 @@
             }
             else{
                 document.querySelector('#user').onsubmit = function(){         
-                    console.log('inside n local');
                     const name = document.querySelector('#user_name').value;
                     localStorage.setItem("name",name);                  
                     window.location = "http://127.0.0.1:5000/home";
