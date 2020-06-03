@@ -1,31 +1,17 @@
 
 document.addEventListener('DOMContentLoaded', () => {  
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-    socket.emit('access');
-    handle_input();
-    let global_name;
+    socket.emit('access');  
+    let global_name = localStorage.getItem("name");
+    let current_channel;
+    createname();
 
-    // use to handle when enter nothing
-    function handle_input(){
-        document.querySelector('#commenting').disabled = true;
-        document.querySelector('#comment').onkeyup = () =>{
-            document.querySelector('#commenting').disabled = false;
-        }   
-    }   
-
-    //create name
-    socket.on('user name', function(name){      
-        if(name == '/e/'){
-            alert("Name is already used!");
-        }
-        else{                       
-            global_name = name;
-            document.querySelector('#name').innerHTML = name;
-            if(document.querySelector('#form') !== null)
-                document.querySelector('#form').remove();            
-        }
-    });
-
+    function createname(){
+        const temp = document.createElement('h6');
+        temp.innerHTML = global_name;
+        document.querySelector('#profile-tray').append(temp);   
+    }
+ 
     //1 create channel - send event to server
     socket.on('connect',() =>{                   
         document.querySelector('#create_channel').onsubmit = () =>{         
@@ -34,17 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit('create channel',{'channel': channel});         
             return false;           
         }        
-
-        if(global_name){
-            document.querySelector('#form').remove();  
-        }
-        else{          
-            document.querySelector('#form').onsubmit = () =>{
-                const name = document.querySelector('#user_name').value;   
-                socket.emit('get name', {'name':name});                
-                return false;  
-            }
-        }
     });
     
 
@@ -75,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //get content of a channel from server to view
     function openChannel(){           
         let name = this.innerHTML; // name of the Channel
+        current_channel = name;
         socket.emit('get content',{'name':name});
         comment(name);       
     }
@@ -85,8 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let comment = document.querySelector('#comment').value;   
             time = new Date(); // Add timestamp
             comment = "(" + time.getHours() + ":" + time.getMinutes() + "-" + time.getDate() + "/" + time.getMonth() + ") " + comment;
-            document.querySelector('#comment').value = "";
-            document.querySelector('#commenting').disabled = true; //////////////         
+            document.querySelector('#comment').value = "";                
             const user = global_name;
             let content = {[name]:[[user,comment]]};  
             socket.emit('comment',{'content':content, 'name':name});       
@@ -114,8 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add comment
     socket.on('add comment', data => {
-        l = data.length - 1;
-        createComments(data[l][0], data[l][1]);
+        content_of_channel = data.content;
+        channel_name = data.channel_name;
+        l = content_of_channel.length - 1;
+        if(channel_name == current_channel){
+            createComments(content_of_channel[l][0], content_of_channel[l][1]);
+        }
     });
 
     //function to add comments to view
