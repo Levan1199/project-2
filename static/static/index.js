@@ -1,6 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', () => {  
-    console.log('inside jsss');
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     socket.emit('access');  
     let global_name = localStorage.getItem("name");
