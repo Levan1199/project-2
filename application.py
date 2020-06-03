@@ -18,7 +18,6 @@ def index():
 
 @app.route("/home")
 def home():
-    print('inside home')
     return render_template("index.html")    
 
 
