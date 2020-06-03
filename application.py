@@ -10,7 +10,6 @@ socketio = SocketIO(app)
 channels = [] # list of channels created
 contents = {} # dict of channel (keyword) : Comments
 current_channel = None
-test_user = None
 
 @app.route("/")
 def index():  
